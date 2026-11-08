@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台风通 · 台风实况</title>
+<style>
+  :root{
+    --bg:#e9f1fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --line:#e5e7eb; --sea:#bfe3f7; --typhoon:#dc2626; --blue:#2563eb;
+    --yellow:#f59e0b; --orange:#ea580c; --red:#dc2626; --radius:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.55;}
+  .container{max-width:640px; margin:0 auto; padding:12px 12px 32px;}
+  header{display:flex; align-items:center; justify-content:space-between; padding:8px 4px 14px; flex-wrap:wrap; gap:6px;}
+  .brand{font-size:20px; font-weight:700;}
+  .brand .logo{color:var(--typhoon);}
+  .tag{font-size:12px; font-weight:600; color:#fff; background:var(--blue); padding:2px 8px; border-radius:999px;}
+  .tag.demo{background:var(--orange);}
+  .update-time{font-size:12px; color:var(--muted);}
+  .card{background:var(--card); border-radius:var(--radius); box-shadow:0 1px 4px rgba(15,40,90,.08);
+    padding:16px; margin-bottom:14px;}
+  .card h2{font-size:16px; margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .card h2::before{content:""; width:4px; height:16px; border-radius:2px; background:var(--typhoon);}
+  .empty{text-align:center; color:var(--muted); padding:24px 0; font-size:14px;}
+  .empty .big{font-size:34px; margin-bottom:8px;}
+  .typhoon-head{display:flex; align-items:center; gap:12px;}
+  .typhoon-icon{flex:0 0 auto; width:56px; height:56px;}
+  .typhoon-head h1{font-size:22px; color:var(--typhoon);}
+  .typhoon-head .sub{font-size:12px; color:var(--muted);}
+  .intensity{margin-left:auto; text-align:center; background:#fef2f2; color:var(--red);
+    border-radius:12px; padding:6px 10px; font-weight:700; font-size:18px; line-height:1.2;}
+  .intensity small{font-size:11px; font-weight:500;}
+  .four-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px;}
+  .four-grid .item{background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:10px 6px; text-align:center;}
+  .four-grid .k{font-size:11px; color:var(--muted);}
+  .four-grid .v{font-size:15px; font-weight:700; margin-top:2px;}
+  .four-grid .v.small{font-size:13px;}
+  .detail-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px 10px; margin-top:14px; font-size:12.5px;}
+  .detail-grid div{border-bottom:1px dashed var(--line); padding:5px 0;}
+  .detail-grid .k{color:var(--muted);} .detail-grid .v{font-weight:600;}
+  .plain-text{margin-top:14px; background:#fff7ed; border:1px solid #fed7aa; border-radius:12px;
+    padding:10px 12px; font-size:13.5px; color:#9a3412;}
+  .plain-text b{color:#c2410c;}
+  .map-wrap{position:relative; border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  svg{display:block; width:100%; height:auto;}
+  .legend{display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:10px; font-size:12px; color:var(--muted);}
+  .legend span{display:flex; align-items:center; gap:5px;}
+  .legend .sw{width:18px; height:0; border-top:3px solid #7dd3fc;}
+  .legend .dw{width:18px; height:0; border-top:3px dashed #f87171;}
+  .legend .err{width:12px; height:12px; border-radius:50%; background:rgba(248,113,113,.25); border:1px dashed #f87171;}
+  .legend .wc{width:12px; height:12px; border-radius:50%; border:1.5px solid #38bdf8;}
+  .warning-banner{border-radius:14px; padding:16px; color:#fff; display:flex; align-items:center; gap:14px;}
+  .warning-banner .lvl{font-size:30px; font-weight:800; line-height:1;}
+  .warning-banner .lvl small{display:block; font-size:12px; font-weight:500; opacity:.9; margin-top:4px;}
+  .warning-banner .txt{font-size:14px;}
+  .warning-banner .txt .t{font-size:16px; font-weight:700;}
+  .warning-banner .txt .d{font-size:12px; opacity:.92; margin-top:3px;}
+  .w-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);}
+  .w-yellow{background:linear-gradient(135deg,#fbbf24,#f59e0b);}
+  .w-orange{background:linear-gradient(135deg,#f97316,#ea580c);}
+  .w-red{background:linear-gradient(135deg,#ef4444,#dc2626);}
+  .w-white{background:linear-gradient(135deg,#64748b,#475569);}
+  .level-cards{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px;}
+  .lv{border-radius:12px; padding:10px 6px; text-align:center; color:#fff; font-size:13px; font-weight:700;}
+  .lv small{display:block; font-size:10px; font-weight:500; opacity:.92; margin-top:2px;}
+  footer{margin-top:8px; font-size:12px; color:var(--muted); text-align:center; line-height:1.7;}
+  footer .warn{color:var(--orange); font-weight:600;}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="brand"><span class="logo">🌀</span> 台风通 <span id="dataTag" class="tag">数据来源：浙江台风系统</span></div>
+    <div class="update-time" id="updateTime">数据加载中…</div>
+  </header>
+
+  <div id="content">
+    <div class="card"><div class="empty"><div class="big">🌀</div>正在加载台风实况数据…</div></div>
+  </div>
+
+  <footer>
+    台风实况与预警数据来源：<b>浙江省台风路径实时发布系统</b>（浙江省水利厅，typhoon.slt.zj.gov.cn），每日自动更新。<br>
+    本网站信息仅供参考，应急避险请以中央气象台、当地气象台及应急管理部门正式发布为准。
+  </footer>
+</div>
+
+<script>
+// ===== 内置演示数据（仅在真实数据不可用时兜底） =====
+const DEMO = {
+  fetchedAt: "2026-11-08T00:00:00.000Z",
+  source: "演示数据",
+  sourceUrl: "",
+  activeCount: 1,
+  typhoons: [{
+    tfid: "202632", name: "查帕卡", enname: "CEMPAKA", warnlevel: "white",
+    center: { lng: 140.35, lat: 25.85 },
+    points: [
+      {time:"2026-11-07 14:00", lng:143.2, lat:19.7, strong:"热带风暴", power:8, speed:20, pressure:995, movespeed:27, movedirection:"西北西", radius7:{max:200}},
+      {time:"2026-11-07 20:00", lng:142.0, lat:20.6, strong:"热带风暴", power:9, speed:23, pressure:990, movespeed:25, movedirection:"西北西", radius7:{max:220}},
+      {time:"2026-11-08 02:00", lng:140.4, lat:21.0, strong:"强热带风暴", power:10, speed:26, pressure:985, movespeed:22, movedirection:"西北西", radius7:{max:230}},
+      {time:"2026-11-08 08:00", lng:139.0, lat:21.5, strong:"强热带风暴", power:10, speed:28, pressure:982, movespeed:22, movedirection:"西北西", radius7:{max:250}}
+    ],
+    forecast: [
+      {time:"2026-11-08 14:00", lng:137.5, lat:22.0, strong:"强热带风暴", power:10, speed:28, pressure:982},
+      {time:"2026-11-09 02:00", lng:135.1, lat:22.7, strong:"台风", power:12, speed:35, pressure:970},
+      {time:"2026-11-09 14:00", lng:134.4, lat:23.4, strong:"强台风", power:14, speed:42, pressure:955},
+      {time:"2026-11-10 14:00", lng:133.0, lat:24.5, strong:"强台风", power:14, speed:42, pressure:955}
+    ]
+  }]
+};
+
+// ===== 预警等级映射（warnlevel: white/blue/yellow/orange/red） =====
+const WARN = {
+  white:  { lvl:"白色", rom:"暂无预警", cls:"w-white",   t:"当前无台风预警信号",
+            d:"该区域暂未发布台风预警。请持续关注最新动态。" },
+  blue:   { lvl:"蓝色", rom:"Ⅳ级预警", cls:"w-blue",   t:"台风蓝色预警信号",
+            d:"预计 24 小时内可能受台风影响，平均风力可达 6 级以上。请减少外出、加固门窗、收回阳台悬挂物品。" },
+  yellow: { lvl:"黄色", rom:"Ⅲ级预警", cls:"w-yellow", t:"台风黄色预警信号",
+            d:"预计 24 小时内受台风影响，平均风力可达 8 级以上。请停止露天集体活动，渔船回港避风。" },
+  orange: { lvl:"橙色", rom:"Ⅱ级预警", cls:"w-orange", t:"台风橙色预警信号",
+            d:"预计 12 小时内受台风影响，平均风力可达 10 级以上。请停课停工，人员进入防风状态。" },
+  red:    { lvl:"红色", rom:"Ⅰ级预警", cls:"w-red",    t:"台风红色预警信号",
+            d:"预计 6 小时内受台风影响，平均风力可达 12 级以上。请停止一切户外活动，危险地带人员撤离。" }
+};
+
+// ===== 渲染 =====
+function fmtTime(iso){ const d = new Date(iso); const p=n=>String(n).padStart(2,"0");
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes()); }
+
+function render(data, isDemo) {
+  const tag = document.getElementById("dataTag");
+  if (isDemo) { tag.textContent = "演示数据"; tag.className = "tag demo"; }
+  else { tag.textContent = "数据来源：浙江台风系统"; tag.className = "tag"; }
+  document.getElementById("updateTime").textContent = "数据更新：" + fmtTime(data.fetchedAt) + "（每日自动抓取）";
+
+  const box = document.getElementById("content");
+  if (!data.typhoons || !data.typhoons.length) {
+    box.innerHTML = '<div class="card"><div class="empty"><div class="big">🌤️</div>当前无活跃台风。</div></div>';
+    return;
+  }
+  box.innerHTML = data.typhoons.map(t => cardHtml(t, data, isDemo)).join("");
+}
+
+function cardHtml(t, data, isDemo) {
+  const latest = t.points[t.points.length - 1] || {};
+  const dir = latest.movedirection || "—";
+  const spd = latest.movespeed ? latest.movespeed + " km/h" : "—";
+  const power = latest.power ? latest.power + "级" : "—";
+  const radius7 = latest.radius7 ? (latest.radius7.max || "—") + " km" : "—";
+  const radius10 = latest.radius10 ? (latest.radius10.max || "—") + " km" : "—";
+  const nowTxt = `东经 ${t.center.lng.toFixed(1)}° · 北纬 ${t.center.lat.toFixed(1)}°`;
+  const w = WARN[t.warnlevel] || WARN.white;
+  return `
+  <section class="card">
+    <div class="typhoon-head">
+      <svg class="typhoon-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="27" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="4 6">
+          <animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="18s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="32" cy="32" r="17" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 6"/>
+        <circle cx="32" cy="32" r="6" fill="#dc2626"/>
+      </svg>
+      <div>
+        <h1>台风「${t.name}」</h1>
+        <div class="sub">编号 ${t.tfid} · ${t.enname} · 强度：${latest.strong || "—"}</div>
+      </div>
+      <div class="intensity">${power}<small>${latest.speed ? latest.speed + " m/s" : ""}</small></div>
+    </div>
+    <div class="four-grid">
+      <div class="item"><div class="k">现在位置</div><div class="v small">${nowTxt}</div></div>
+      <div class="item"><div class="k">往哪走</div><div class="v">${dir}</div></div>
+      <div class="item"><div class="k">移动速度</div><div class="v">${spd}</div></div>
+      <div class="item"><div class="k">风力多大</div><div class="v">${power}</div></div>
+    </div>
+    <div class="detail-grid">
+      <div><span class="k">中心气压</span> <span class="v">${latest.pressure || "—"} hPa</span></div>
+      <div><span class="k">七级风圈</span> <span class="v">${radius7}</span></div>
+      <div><span class="k">十级风圈</span> <span class="v">${radius10}</span></div>
+      <div><span class="k">最新实况时间</span> <span class="v">${latest.time || "—"}</span></div>
+      <div><span class="k">预警状态</span> <span class="v">${w.lvl}</span></div>
+      <div><span class="k">数据来源</span> <span class="v">浙江省台风路径实时发布系统</span></div>
+    </div>
+    <div class="plain-text">🗣️ <b>通俗解读：</b>台风「${t.name}」正以 <b>${spd}</b> 的速度向<b>${dir}</b>方向移动，
+      7 级大风圈半径约 <b>${radius7}</b>，最新实况位于 <b>${nowTxt}</b>。请沿海居民关注当地气象台发布的预警信息，提前做好防风准备。</div>
+  </section>
+  <section class="card">
+    <h2>路径示意图</h2>
+    <div class="map-wrap">${pathSvg(t)}</div>
+    <div class="legend">
+      <span><span class="sw"></span>已发生路径</span>
+      <span><span class="dw"></span>预报路径</span>
+      <span><span class="err"></span>预报误差圈（示意）</span>
+      <span><span class="wc"></span>风圈（七/十级）</span>
+    </div>
+  </section>
+  <section class="card">
+    <h2>预警信息</h2>
+    <div class="warning-banner ${w.cls}">
+      <div class="lvl">${w.lvl}<small>${w.rom}</small></div>
+      <div class="txt"><div class="t">${w.t}</div><div class="d">${w.d}</div></div>
+    </div>
+    <div class="level-cards">
+      <div class="lv" style="background:var(--blue)">蓝色<small>Ⅳ级 · 6级风</small></div>
+      <div class="lv" style="background:var(--yellow)">黄色<small>Ⅲ级 · 8级风</small></div>
+      <div class="lv" style="background:var(--orange)">橙色<small>Ⅱ级 · 10级风</small></div>
+      <div class="lv" style="background:var(--red)">红色<small>Ⅰ级 · 12级风</small></div>
+    </div>
+  </section>`;
+}
+
+// ===== SVG 路径图（经纬度投影） =====
+const CITIES = [
+  {n:"湛江", lng:110.4, lat:21.2}, {n:"海口", lng:110.3, lat:20.0},
+  {n:"广州", lng:113.3, lat:23.1}, {n:"厦门", lng:118.1, lat:24.5},
+  {n:"福州", lng:119.3, lat:26.1}, {n:"温州", lng:120.7, lat:28.0},
+  {n:"宁波", lng:121.5, lat:29.9}, {n:"上海", lng:121.5, lat:31.2},
+  {n:"青岛", lng:120.4, lat:36.1}, {n:"台北", lng:121.5, lat:25.0}
+];
+function pathSvg(t) {
+  const W = 420, H = 480, PAD = 46;
+  const pts = t.points.map(p => [p.lng, p.lat]);
+  const fcs = t.forecast.map(f => [f.lng, f.lat]);
+  const all = pts.concat(fcs, [[t.center.lng, t.center.lat]]);
+  let minLng = Math.min(...all.map(a => a[0])), maxLng = Math.max(...all.map(a => a[0]));
+  let minLat = Math.min(...all.map(a => a[1])), maxLat = Math.max(...all.map(a => a[1]));
+  const spanLng = Math.max(maxLng - minLng, 4), spanLat = Math.max(maxLat - minLat, 4);
+  minLng -= spanLng * 0.12; maxLng += spanLng * 0.12;
+  minLat -= spanLat * 0.12; maxLat += spanLat * 0.12;
+  const kx = (W - PAD * 2) / (maxLng - minLng), ky = (H - PAD * 2) / (maxLat - minLat);
+  const X = lng => PAD + (lng - minLng) * kx;
+  const Y = lat => H - PAD - (lat - minLat) * ky;
+  const kmPerPx = 111 / ((H - PAD * 2) / spanLat);
+
+  const hist = pts.map(p => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(" ");
+  const fpath = fcs.map(f => `${X(f[0]).toFixed(1)},${Y(f[1]).toFixed(1)}`).join(" ");
+  const cityDots = CITIES.map(c => {
+    const x = X(c.lng), y = Y(c.lat);
+    if (x < 4 || x > W - 4 || y < 4 || y > H - 4) return "";
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.5" fill="#334155"/><text x="${x.toFixed(1)}" y="${(y - 8).toFixed(1)}" text-anchor="middle" font-size="10" fill="#1f2937" font-family="sans-serif">${c.n}</text>`;
+  }).join("");
+  const cx = X(t.center.lng), cy = Y(t.center.lat);
+  const r7 = t.points.length ? (t.points[t.points.length-1].radius7?.max || 0) * kmPerPx : 0;
+  const r10 = t.points.length ? (t.points[t.points.length-1].radius10?.max || 0) * kmPerPx : 0;
+  const errCircles = fcs.map((f, i) => {
+    const r = 28 + i * 9;
+    return `<circle cx="${X(f[0]).toFixed(1)}" cy="${Y(f[1]).toFixed(1)}" r="${r}" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1" stroke-dasharray="3 3"/>`;
+  }).join("");
+  const fcDots = fcs.map(f =>
+    `<circle cx="${X(f[0]).toFixed(1)}" cy="${Y(f[1]).toFixed(1)}" r="4" fill="#f87171"/>`).join("");
+
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="台风路径示意图">
+    <defs><linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cde9fa"/><stop offset="1" stop-color="#9fd4f5"/></linearGradient></defs>
+    <rect width="${W}" height="${H}" fill="url(#sea)"/>
+    <g stroke="#ffffff" stroke-opacity=".45" stroke-width="1">
+      <line x1="${PAD}" y1="${H/2}" x2="${W-PAD}" y2="${H/2}"/>
+      <line x1="${W/2}" y1="${PAD}" x2="${W/2}" y2="${H-PAD}"/>
+    </g>
+    ${cityDots}
+    <polyline points="${hist}" fill="none" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#ffffff" stroke="#0ea5e9" stroke-width="1.5">
+      ${pts.map(p => `<circle cx="${X(p[0]).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="3.5"/>`).join("")}
+    </g>
+    ${errCircles}
+    <polyline points="${fpath}" fill="none" stroke="#f87171" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
+    ${fcDots}
+    ${r10 > 0 ? `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${Math.min(r10, 90)}" fill="rgba(56,189,248,.3)" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="5 4"/>` : ""}
+    ${r7 > 0 ? `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${Math.min(r7, 140)}" fill="rgba(56,189,248,.15)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5 4"/>` : ""}
+    <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="9" fill="#dc2626">
+      <animate attributeName="r" values="8;11;8" dur="2s" repeatCount="indefinite"/></circle>
+    <text x="${cx.toFixed(1)}" y="${(cy + 24).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626" font-family="sans-serif">${t.name} 当前位置</text>
+  </svg>`;
+}
+
+// ===== 加载 =====
+async function load() {
+  let data = null, isDemo = false;
+  try {
+    const r = await fetch("data/typhoon.json", { cache: "no-store" });
+    if (r.ok) { data = await r.json(); }
+  } catch (e) { /* 网络/文件不可用则用演示数据 */ }
+  if (!data || !data.typhoons || !data.typhoons.length) { data = DEMO; isDemo = true; }
+  render(data, isDemo);
+}
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+{
+  "fetchedAt": "2026-11-08T08:55:55.150Z",
+  "source": "浙江省台风路径实时发布系统（浙江省水利厅）",
+  "sourceUrl": "https://typhoon.slt.zj.gov.cn",
+  "activeCount": 1,
+  "typhoons": [
+    {
+      "tfid": "202632",
+      "name": "查帕卡",
+      "enname": "CEMPAKA",
+      "warnlevel": "white",
+      "starttime": "2026-11-07 14:00:00",
+      "endtime": "2026-11-08 14:00:00",
+      "isactive": "1",
+      "center": {
+        "lng": 140.35,
+        "lat": 25.85
+      },
+      "points": [
+        {
+          "time": "2026-11-07 14:00:00",
+          "lng": 143.2,
+          "lat": 19.7,
+          "strong": "热带风暴",
+          "power": 8,
+          "speed": 20,
+          "pressure": 995,
+          "movespeed": 27,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-07 17:00:00",
+          "lng": 142.7,
+          "lat": 20,
+          "strong": "热带风暴",
+          "power": 9,
+          "speed": 23,
+          "pressure": 990,
+          "movespeed": 30,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-07 20:00:00",
+          "lng": 142.1,
+          "lat": 20.4,
+          "strong": "热带风暴",
+          "power": 9,
+          "speed": 23,
+          "pressure": 990,
+          "movespeed": 24,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-07 23:00:00",
+          "lng": 141.3,
+          "lat": 20.7,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 25,
+          "pressure": 985,
+          "movespeed": 25,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-08 02:00:00",
+          "lng": 140.1,
+          "lat": 21.1,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 25,
+          "pressure": 985,
+          "movespeed": 21,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-08 05:00:00",
+          "lng": 139.3,
+          "lat": 21.4,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 25,
+          "pressure": 985,
+          "movespeed": 22,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": null,
+          "radius12": null
+        },
+        {
+          "time": "2026-11-08 08:00:00",
+          "lng": 138.6,
+          "lat": 21.5,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 28,
+          "pressure": 982,
+          "movespeed": 24,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": {
+            "max": 60,
+            "quadrants": [
+              60,
+              50,
+              60,
+              50
+            ]
+          },
+          "radius12": null
+        },
+        {
+          "time": "2026-11-08 11:00:00",
+          "lng": 138.1,
+          "lat": 21.7,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 28,
+          "pressure": 982,
+          "movespeed": 23,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": {
+            "max": 60,
+            "quadrants": [
+              60,
+              50,
+              60,
+              50
+            ]
+          },
+          "radius12": null
+        },
+        {
+          "time": "2026-11-08 14:00:00",
+          "lng": 137.5,
+          "lat": 22,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 28,
+          "pressure": 982,
+          "movespeed": 22,
+          "movedirection": "西北西",
+          "radius7": {
+            "max": 250,
+            "quadrants": [
+              200,
+              150,
+              250,
+              150
+            ]
+          },
+          "radius10": {
+            "max": 60,
+            "quadrants": [
+              60,
+              50,
+              60,
+              50
+            ]
+          },
+          "radius12": null
+        }
+      ],
+      "forecast": [
+        {
+          "time": "2026-11-08 14:00:00",
+          "lng": 137.5,
+          "lat": 22,
+          "strong": "强热带风暴",
+          "power": 10,
+          "speed": 28,
+          "pressure": 982
+        },
+        {
+          "time": "2026-11-09 02:00:00",
+          "lng": 135.2,
+          "lat": 22.9,
+          "strong": "台风",
+          "power": 12,
+          "speed": 33,
+          "pressure": 975
+        },
+        {
+          "time": "2026-11-09 14:00:00",
+          "lng": 134.6,
+          "lat": 23.5,
+          "strong": "台风",
+          "power": 13,
+          "speed": 38,
+          "pressure": 965
+        },
+        {
+          "time": "2026-11-10 02:00:00",
+          "lng": 135.7,
+          "lat": 23.8,
+          "strong": "强台风",
+          "power": 15,
+          "speed": 48,
+          "pressure": 945
+        },
+        {
+          "time": "2026-11-10 14:00:00",
+          "lng": 138.5,
+          "lat": 24.4,
+          "strong": "强台风",
+          "power": 14,
+          "speed": 45,
+          "pressure": 950
+        },
+        {
+          "time": "2026-11-11 02:00:00",
+          "lng": 142.2,
+          "lat": 25.1,
+          "strong": "台风",
+          "power": 13,
+          "speed": 38,
+          "pressure": 965
+        },
+        {
+          "time": "2026-11-11 14:00:00",
+          "lng": 146.4,
+          "lat": 25.9,
+          "strong": "强热带风暴",
+          "power": 11,
+          "speed": 30,
+          "pressure": 980
+        },
+        {
+          "time": "2026-11-12 14:00:00",
+          "lng": 151.1,
+          "lat": 26.4,
+          "strong": "热带风暴",
+          "power": 8,
+          "speed": 20,
+          "pressure": 995
+        }
+      ]
+    }
+  ]
+}
